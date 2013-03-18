@@ -1,0 +1,7 @@
+myclient
+myclient.d
+myclient.o
+
+myserver
+myserver.d
+myserver.o
