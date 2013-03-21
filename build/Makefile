@@ -35,6 +35,8 @@ libclientserver.a: connection.o server.o
 	connection.o server.o
 	ranlib libclientserver.a
 
+server: msg_handler.o ng_server.o libclientserver.a
+
 %.d: %.cc
 	@set -e; rm -f $(@F); \
 		$(CXX) -MM $(CXXFLAGS) $< > $(@F).$$$$; \
