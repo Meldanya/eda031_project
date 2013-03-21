@@ -41,7 +41,7 @@ myclient: myclient.o
 
 # Standard clean and cleaner
 clean:
-	$(RM) *.o
+	$(RM) *.o *.d
 
 cleaner: clean
 	$(RM) $(PROGS)
