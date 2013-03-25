@@ -1,11 +1,19 @@
-#include "server.h"
-
 #include "msg_handler.h"
+#include "server.h"
+#include "protocol.h"
 
 #include <iostream>
 
 using namespace std;
 using namespace client_server;
+using namespace protocol;
+
+void error(Server &server, Connection *conn)
+{
+	server.deregisterConnection(conn);
+	delete conn;
+	cout << "Client closed connection" << endl;
+}
 
 int main(int argc, const char *argv[])
 {
@@ -27,12 +35,11 @@ int main(int argc, const char *argv[])
 		if (conn != 0) {
 			try {
 				msg_handler handler(conn);
-				unsigned char cmd = handler.read_cmd();
-				cout << hex << "0x" << (unsigned int) cmd << endl;
+				handler.handle();
 			} catch (ConnectionClosedException&) {
-				server.deregisterConnection(conn);
-				delete conn;
-				cout << "Client closed connection" << endl;
+				error(server, conn);
+			} catch (msg_handler::malformed_req_exception&) {
+				error(server, conn);
 			}
 		} else {
 			server.registerConnection(new Connection);
