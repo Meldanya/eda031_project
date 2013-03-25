@@ -37,6 +37,8 @@
 #include <sys/uio.h>     /* read(), write() */
 #include <netinet/in.h>  /* sockaddr_in */
 
+#pragma GCC diagnostic ignored "-Wold-style-cast"
+
 namespace client_server {
     bool Connection::ignoresPipeSignals = false;
     
