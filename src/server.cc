@@ -32,6 +32,8 @@
 #include <sys/time.h>    /* select() */
 #include <netinet/in.h>  /* sockaddr_in */
 
+#pragma GCC diagnostic ignored "-Wold-style-cast"
+
 namespace client_server {
     Server::Server(int port) {
         no_of_connections = 0;
