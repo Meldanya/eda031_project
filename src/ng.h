@@ -5,13 +5,13 @@
 
 
 
-struct NG {
+struct ng {
 	size_t id;
 	std::string name;
 	
-	NG (size_t id, std::string name) : id(id), name(name) {}
+	ng (size_t id, std::string name) : id(id), name(name) {}
 	
-	bool operator<(const NG& other) {
+	bool operator<(const ng& other) const {
 		return id < other.id;
 	}
 };

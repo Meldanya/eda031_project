@@ -11,19 +11,20 @@
 
 
 
-class MemDatabase : public Database{
+class mem_database : public database {
 public:
-	typedef std::map<NG,std::vector<Art>> MDB;
+	typedef std::map<ng,std::vector<art>> mdb;
 	
-	virtual std::vector<NG> list_ng() const;
-	/*virtual Vector<Art> list_art(const NG&) const;
-	virtual Art get_art(const NG&, size_t id) const;
-	virtual NG create_ng(const NG&);
-	virtual void delete_ng(size_t id);
-	virtual Art create_art(const Art&);
-	virtual void delete_art(size_t id);*/
+	virtual news_groups list_ng() const;
+	virtual ng get_ng(size_t id) const throw(access_error);
+	virtual articles list_art(const ng&) const throw(access_error);
+	virtual art get_art(const ng&, size_t id) const throw(access_error);
+	virtual ng create_ng(const ng&);
+	virtual void delete_ng(const ng&) throw(access_error);
+	virtual art create_art(const ng&, const art&) throw(access_error);
+	virtual void delete_art(const ng&, size_t id) throw(access_error);
 private:
-	MDB db; 
+	mdb db; 
 };
 
 #endif
