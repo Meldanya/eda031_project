@@ -3,8 +3,14 @@
 # connection.o and server.o
 #
 
+ifeq ($(shell uname), Darwin)
 CXX		 = clang++
 CC		 = clang++
+else
+CXX		 = g++
+CC		 = g++
+endif
+
 CXXFLAGS  = -pipe -Wall -Werror -pedantic-errors
 CXXFLAGS += -Wextra -std=c++0x
 # The following option cannot be used since some of the socket
