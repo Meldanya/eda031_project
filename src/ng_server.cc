@@ -1,6 +1,8 @@
 #include "msg_handler.h"
 #include "server.h"
 #include "protocol.h"
+#include "database.h"
+#include "memdb.h"
 
 #include <iostream>
 
@@ -29,12 +31,14 @@ int main(int argc, const char *argv[])
 		exit(1);
 	}
 
+	mem_database db;
+
 	while (true) {
 		Connection* conn = server.waitForActivity();
 
 		if (conn != 0) {
 			try {
-				msg_handler handler(conn);
+				msg_handler handler(conn, db);
 				handler.handle();
 			} catch (ConnectionClosedException&) {
 				error(server, conn);

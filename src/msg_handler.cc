@@ -49,9 +49,13 @@ void msg_handler::handle_list_ng()
 {
 	read_end();
 	conn->write(Protocol::ANS_LIST_NG);
-	write_parameter_int(1);
-	write_parameter_int(1);
-	write_string("first");
+	vector<ng> ngs = db.list_ng();
+	write_parameter_int(ngs.size());	// #
+	for (ng &ng : ngs) {
+		write_parameter_int(ng.id);		// id
+		write_string(ng.name);			// name
+	}
+
 	conn->write(Protocol::ANS_END);
 	//cout << "Got list req. TODO: handle it" << endl;
 }
@@ -63,7 +67,7 @@ void msg_handler::handle_create_ng()
 	//cout << "Got create ng req(" << name << "). TODO: handle it" << endl;
 	conn->write(Protocol::ANS_CREATE_NG);
 	try {
-		// db stuff
+		db.create_ng(name);
 		conn->write(Protocol::ANS_ACK);
 	} catch (database::ng_access_error) {
 		conn->write(Protocol::ANS_NAK);
@@ -79,7 +83,7 @@ void msg_handler::handle_delete_ng()
 	//cout << "Got delete ng req(" << ng_id << "). TODO: handle it" << endl;
 	conn->write(Protocol::ANS_DELETE_NG);
 	try {
-		// db stuff
+		db.delete_ng(ng_id);
 		conn->write(Protocol::ANS_ACK);
 	} catch (database::ng_access_error) {
 		conn->write(Protocol::ANS_NAK);
@@ -95,10 +99,13 @@ void msg_handler::handle_list_art()
 	//cout << "Got list art. for ng " << ng_id << endl;
 	conn->write(Protocol::ANS_LIST_ART);
 	try {
-		// db stuff
+		vector<art> articles = db.list_art(ng_id);
 		conn->write(Protocol::ANS_ACK);
-		// write num_p #
-		// (num_p string_p) *
+		write_parameter_int(articles.size());
+		for (art &article : articles) {
+			write_parameter_int(article.id);		// id
+			write_string(article.title);			// name
+		}
 	} catch (database::ng_access_error) {
 		conn->write(Protocol::ANS_NAK);
 		conn->write(Protocol::ERR_NG_DOES_NOT_EXIST);
@@ -117,7 +124,7 @@ void msg_handler::handle_create_art()
 		   ng_id, title.c_str(), author.c_str(), text.c_str());
 	conn->write(Protocol::ANS_CREATE_ART);
 	try {
-		// db stuff
+		db.create_art(ng_id, author, title, text);
 		conn->write(Protocol::ANS_ACK);
 	} catch (database::ng_access_error) {
 		conn->write(Protocol::ANS_NAK);
@@ -134,7 +141,7 @@ void msg_handler::handle_delete_art()
 	//cout << "Removing art " << art_id << " from ng " << ng_id << endl;
 	conn->write(Protocol::ANS_DELETE_ART);
 	try {
-		// db stuff
+		db.delete_art(ng_id, art_id);
 		conn->write(Protocol::ANS_ACK);
 	} catch (database::ng_access_error) {
 		conn->write(Protocol::ANS_NAK);
@@ -154,15 +161,14 @@ void msg_handler::handle_get_article()
 	//cout << "Getting art " << art_id << " from ng " << ng_id << endl;
 	conn->write(Protocol::ANS_GET_ART);
 	try {
-		// db stuff
+		art article = db.get_art(ng_id, art_id);
 		conn->write(Protocol::ANS_ACK);
-		// write string_p title
-		// write string_p author
-		// write string_p text
+		write_string(article.title);
+		write_string(article.author);
+		write_string(article.content);
 	} catch (database::ng_access_error) {
 		conn->write(Protocol::ANS_NAK);
 		conn->write(Protocol::ERR_NG_DOES_NOT_EXIST);
-		// or conn->write(Protocol::ERR_ART_DOES_NOT_EXIST);
 	} catch (database::art_access_error) {
 		conn->write(Protocol::ANS_NAK);
 		conn->write(Protocol::ERR_ART_DOES_NOT_EXIST);

@@ -2,6 +2,7 @@
 #define MSG_HANDLER_H
 
 #include "connection.h"
+#include "database.h"
 
 #include <vector>
 
@@ -11,12 +12,15 @@ class msg_handler
 	public:
 		typedef struct malformed_req_exception {} malformed_req_exception;
 
-		msg_handler(client_server::Connection *conn) : conn(conn) {}
+ msg_handler(client_server::Connection *conn, database &db)
+	 : conn(conn), db(db)
+		{}
 
 		void handle(); //throw(client_server::ConnectionClosedException);
 
 	private:
 		client_server::Connection *conn;
+		database &db;
 		std::vector<unsigned char> buf;
 
 		void handle_list_ng(); //throw(client_server::ConnectionClosedException,

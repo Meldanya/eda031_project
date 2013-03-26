@@ -41,7 +41,7 @@ libclientserver.a: connection.o server.o
 	connection.o server.o
 	ranlib libclientserver.a
 
-server: msg_handler.o ng_server.o libclientserver.a
+server: msg_handler.o ng_server.o memdb.o libclientserver.a
 
 test_db: main
 	./$<
