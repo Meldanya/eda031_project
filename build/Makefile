@@ -6,7 +6,7 @@
 ifeq ($(shell uname), Darwin)
 CXX		 = clang++
 CC		 = clang++
-CXXFLAGS = -stdlib=libc++
+# CXXFLAGS = -stdlib=libc++
 else
 CXX		 = g++
 CC		 = g++

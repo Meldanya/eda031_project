@@ -1,5 +1,6 @@
 #include "msg_handler.h"
 #include "protocol.h"
+// #include "database.h"
 
 #include <iostream>
 
@@ -40,35 +41,69 @@ void msg_handler::handle()
 			handle_get_article();
 			break;
 	}
-	read_end();
 }
+
+#pragma GCC diagnostic ignored "-Wunused-variable"
 
 void msg_handler::handle_list_ng()
 {
+	read_end();
 	conn->write(Protocol::ANS_LIST_NG);
 	write_parameter_int(1);
 	write_parameter_int(1);
 	write_string("first");
 	conn->write(Protocol::ANS_END);
-	cout << "Got list req. TODO: handle it" << endl;
+	//cout << "Got list req. TODO: handle it" << endl;
 }
 
 void msg_handler::handle_create_ng()
 {
 	string name = read_parameter_string();
-	cout << "Got create ng req(" << name << "). TODO: handle it" << endl;
+	read_end();
+	//cout << "Got create ng req(" << name << "). TODO: handle it" << endl;
+	conn->write(Protocol::ANS_CREATE_NG);
+	try {
+		// db stuff
+		conn->write(Protocol::ANS_ACK);
+	} catch (...) {
+		conn->write(Protocol::ANS_NAK);
+		conn->write(Protocol::ERR_NG_ALREADY_EXISTS);
+	}
+	conn->write(Protocol::ANS_END);
 }
 
 void msg_handler::handle_delete_ng()
 {
 	int ng_id = read_parameter_int();
-	cout << "Got delete ng req(" << ng_id << "). TODO: handle it" << endl;
+	read_end();
+	//cout << "Got delete ng req(" << ng_id << "). TODO: handle it" << endl;
+	conn->write(Protocol::ANS_DELETE_NG);
+	try {
+		// db stuff
+		conn->write(Protocol::ANS_ACK);
+	} catch (...) {
+		conn->write(Protocol::ANS_NAK);
+		conn->write(Protocol::ERR_NG_DOES_NOT_EXIST);
+	}
+	conn->write(Protocol::ANS_END);
 }
 
 void msg_handler::handle_list_art()
 {
 	int ng_id = read_parameter_int();
-	cout << "Got list art. for ng " << ng_id << endl;
+	read_end();
+	//cout << "Got list art. for ng " << ng_id << endl;
+	conn->write(Protocol::ANS_LIST_ART);
+	try {
+		// db stuff
+		conn->write(Protocol::ANS_ACK);
+		// write num_p #
+		// (num_p string_p) *
+	} catch (...) {
+		conn->write(Protocol::ANS_NAK);
+		conn->write(Protocol::ERR_NG_DOES_NOT_EXIST);
+	}
+	conn->write(Protocol::ANS_END);
 }
 
 void msg_handler::handle_create_art()
@@ -77,22 +112,57 @@ void msg_handler::handle_create_art()
 	string title  = read_parameter_string();
 	string author = read_parameter_string();
 	string text   = read_parameter_string();
+	read_end();
 	printf("Creating article in ng %d:\ntitle: %s\nauthor: %s\ntext: %s\n",
 		   ng_id, title.c_str(), author.c_str(), text.c_str());
+	conn->write(Protocol::ANS_CREATE_ART);
+	try {
+		// db stuff
+		conn->write(Protocol::ANS_ACK);
+	} catch (...) {
+		conn->write(Protocol::ANS_NAK);
+		conn->write(Protocol::ERR_NG_DOES_NOT_EXIST);
+	}
+	conn->write(Protocol::ANS_END);
 }
 
 void msg_handler::handle_delete_art()
 {
 	int ng_id  = read_parameter_int();
 	int art_id = read_parameter_int();
-	cout << "Removing art " << art_id << " from ng " << ng_id << endl;
+	read_end();
+	//cout << "Removing art " << art_id << " from ng " << ng_id << endl;
+	conn->write(Protocol::ANS_DELETE_ART);
+	try {
+		// db stuff
+		conn->write(Protocol::ANS_ACK);
+	} catch (...) {
+		conn->write(Protocol::ANS_NAK);
+		conn->write(Protocol::ERR_NG_DOES_NOT_EXIST);
+		// or conn->write(Protocol::ERR_ART_DOES_NOT_EXIST);
+	}
+	conn->write(Protocol::ANS_END);
 }
 
 void msg_handler::handle_get_article()
 {
 	int ng_id  = read_parameter_int();
 	int art_id = read_parameter_int();
-	cout << "Getting art " << art_id << " from ng " << ng_id << endl;
+	read_end();
+	//cout << "Getting art " << art_id << " from ng " << ng_id << endl;
+	conn->write(Protocol::ANS_GET_ART);
+	try {
+		// db stuff
+		conn->write(Protocol::ANS_ACK);
+		// write string_p title
+		// write string_p author
+		// write string_p text
+	} catch (...) {
+		conn->write(Protocol::ANS_NAK);
+		conn->write(Protocol::ERR_NG_DOES_NOT_EXIST);
+		// or conn->write(Protocol::ERR_ART_DOES_NOT_EXIST);
+	}
+	conn->write(Protocol::ANS_END);
 }
 
 int msg_handler::read_int()
