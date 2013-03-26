@@ -5,28 +5,25 @@
 #include <iostream>
 
 
-struct art { 
+struct art {
 	friend std::ostream& operator<<(std::ostream& os, const art& art);
 	size_t id;
-	typedef std::string string;
-	string author;
-	string title;
-	string content;
-	
-	art(size_t id, string author, string title, string content) : 
+	std::string author;
+	std::string title;
+	std::string content;
+
+	art(size_t id, std::string author, std::string title, std::string content) :
 		id(id), author(author), title(title), content(content) {}
-	
-	
+
 };
-
-
 
 struct id_comparator {
 	size_t id;
 	id_comparator (size_t id) : id(id) {}
-	
+
 	bool operator()(const art& a) {
 		return (a.id == id);
 	}
 };
+
 #endif
