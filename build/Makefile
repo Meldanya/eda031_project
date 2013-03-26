@@ -6,12 +6,13 @@
 ifeq ($(shell uname), Darwin)
 CXX		 = clang++
 CC		 = clang++
+CXXFLAGS = -stdlib=libc++
 else
 CXX		 = g++
 CC		 = g++
 endif
 
-CXXFLAGS  = -pipe -Wall -Werror -pedantic-errors
+CXXFLAGS += -pipe -Wall -Werror -pedantic-errors
 CXXFLAGS += -Wextra -std=c++0x
 # The following option cannot be used since some of the socket
 # macros give warnings on "old-style-cast"
@@ -50,7 +51,7 @@ server: msg_handler.o ng_server.o libclientserver.a
 		rm -f $(@F).$$$$
 
 clean:
-	$(RM) -rf *.o *.d
+	$(RM) -rf *.o *.d* server
 
 cleaner: clean
 	$(RM) libclientserver.a
