@@ -1,6 +1,6 @@
 #include "msg_handler.h"
 #include "protocol.h"
-// #include "database.h"
+#include "database.h"
 
 #include <iostream>
 
@@ -65,7 +65,7 @@ void msg_handler::handle_create_ng()
 	try {
 		// db stuff
 		conn->write(Protocol::ANS_ACK);
-	} catch (...) {
+	} catch (database::ng_access_error) {
 		conn->write(Protocol::ANS_NAK);
 		conn->write(Protocol::ERR_NG_ALREADY_EXISTS);
 	}
@@ -81,7 +81,7 @@ void msg_handler::handle_delete_ng()
 	try {
 		// db stuff
 		conn->write(Protocol::ANS_ACK);
-	} catch (...) {
+	} catch (database::ng_access_error) {
 		conn->write(Protocol::ANS_NAK);
 		conn->write(Protocol::ERR_NG_DOES_NOT_EXIST);
 	}
@@ -99,7 +99,7 @@ void msg_handler::handle_list_art()
 		conn->write(Protocol::ANS_ACK);
 		// write num_p #
 		// (num_p string_p) *
-	} catch (...) {
+	} catch (database::ng_access_error) {
 		conn->write(Protocol::ANS_NAK);
 		conn->write(Protocol::ERR_NG_DOES_NOT_EXIST);
 	}
@@ -119,7 +119,7 @@ void msg_handler::handle_create_art()
 	try {
 		// db stuff
 		conn->write(Protocol::ANS_ACK);
-	} catch (...) {
+	} catch (database::ng_access_error) {
 		conn->write(Protocol::ANS_NAK);
 		conn->write(Protocol::ERR_NG_DOES_NOT_EXIST);
 	}
@@ -136,10 +136,12 @@ void msg_handler::handle_delete_art()
 	try {
 		// db stuff
 		conn->write(Protocol::ANS_ACK);
-	} catch (...) {
+	} catch (database::ng_access_error) {
 		conn->write(Protocol::ANS_NAK);
 		conn->write(Protocol::ERR_NG_DOES_NOT_EXIST);
-		// or conn->write(Protocol::ERR_ART_DOES_NOT_EXIST);
+	} catch (database::art_access_error) {
+		conn->write(Protocol::ANS_NAK);
+		conn->write(Protocol::ERR_ART_DOES_NOT_EXIST);
 	}
 	conn->write(Protocol::ANS_END);
 }
@@ -157,10 +159,13 @@ void msg_handler::handle_get_article()
 		// write string_p title
 		// write string_p author
 		// write string_p text
-	} catch (...) {
+	} catch (database::ng_access_error) {
 		conn->write(Protocol::ANS_NAK);
 		conn->write(Protocol::ERR_NG_DOES_NOT_EXIST);
 		// or conn->write(Protocol::ERR_ART_DOES_NOT_EXIST);
+	} catch (database::art_access_error) {
+		conn->write(Protocol::ANS_NAK);
+		conn->write(Protocol::ERR_ART_DOES_NOT_EXIST);
 	}
 	conn->write(Protocol::ANS_END);
 }
@@ -199,7 +204,6 @@ void msg_handler::write_parameter_int(int value)
 }
 
 string msg_handler::read_parameter_string()
-//throw(client_server::ConnectionClosedException, malformed_req_exception)
 {
 	if (conn->read() != Protocol::PAR_STRING)
 		throw malformed_req_exception();
