@@ -11,6 +11,8 @@ struct ng {
 	
 	ng (size_t id, std::string name) : id(id), name(name) {}
 	
+	ng() {id = 0; name = "";}
+	
 	bool operator<(const ng& other) const {
 		return id < other.id;
 	}
