@@ -24,11 +24,10 @@ else
 endif
 
 SRC_DIR   = ../src
-BIN_DIR   = ../bin
 VPATH     = $(SRC_DIR)
 SRC       = $(wildcard $(SRC_DIR)/*.cc)
 
-.PHONY: all clean cleaner
+.PHONY: all clean cleaner test_db
 
 all: libclientserver.a
 
@@ -43,6 +42,11 @@ libclientserver.a: connection.o server.o
 	ranlib libclientserver.a
 
 server: msg_handler.o ng_server.o libclientserver.a
+
+test_db: main
+	./$<
+
+main: main.o memdb.o art.o ng.o
 
 %.d: %.cc
 	@set -e; rm -f $(@F); \

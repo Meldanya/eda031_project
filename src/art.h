@@ -2,10 +2,11 @@
 #define ART_H
 
 #include <string>
-
+#include <iostream>
 
 
 struct art { 
+	friend std::ostream& operator<<(std::ostream& os, const art& art);
 	size_t id;
 	typedef std::string string;
 	string author;
@@ -17,6 +18,8 @@ struct art {
 	
 	
 };
+
+
 
 struct id_comparator {
 	size_t id;

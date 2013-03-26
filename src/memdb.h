@@ -20,15 +20,16 @@ public:
 	typedef std::map<ng,std::vector<art>> mdb;
 	typedef std::map<size_t, ng> idmap;
 	
-	virtual articles list_art(size_t ng_id) const throw(access_error);
-	virtual art get_art(size_t ng_id, size_t id) const throw(access_error);
-	virtual art create_art(size_t ng_id, const art&) throw(access_error);
-	virtual void delete_art(size_t ng_id, size_t id) throw(access_error);
+	virtual articles list_art(size_t ng_id) const throw(ng_access_error);
+	virtual art get_art(size_t ng_id, size_t id) const throw(ng_access_error, art_access_error);
+	virtual art create_art(size_t ng_id, const std::string& author, const std::string& title, 
+		const std::string& content) throw(ng_access_error);
+	virtual void delete_art(size_t ng_id, size_t id) throw(ng_access_error, art_access_error);
 	
 	virtual news_groups list_ng() const;
-	virtual ng get_ng(size_t id) const throw(access_error);
-	virtual ng create_ng(const ng&);
-	virtual void delete_ng(size_t ng_id) throw(access_error);
+	virtual ng get_ng(size_t id) const throw(ng_access_error);
+	virtual ng create_ng(std::string name) throw(ng_access_error);
+	virtual void delete_ng(size_t ng_id) throw(ng_access_error);
 	
 private:
 	mdb db; 
