@@ -12,32 +12,11 @@ class msg_handler
 	public:
 		typedef struct malformed_req_exception {} malformed_req_exception;
 
- msg_handler(client_server::Connection *conn, database &db)
-	 : conn(conn), db(db)
-		{}
+		msg_handler(client_server::Connection *conn) : conn(conn) {}
 
-		void handle(); //throw(client_server::ConnectionClosedException);
-
-	private:
+	protected:
 		client_server::Connection *conn;
-		database &db;
-		std::vector<unsigned char> buf;
 
-		void handle_list_ng(); //throw(client_server::ConnectionClosedException,
-				//malformed_req_exception);
-		void handle_create_ng(); //throw(client_server::ConnectionClosedException,
-				//malformed_req_exception);
-		void handle_delete_ng(); //throw(client_server::ConnectionClosedException,
-				//malformed_req_exception);
-		void handle_list_art(); //throw(client_server::ConnectionClosedException,
-				//malformed_req_exception);
-		void handle_create_art(); //throw(client_server::ConnectionClosedException,
-				//malformed_req_exception);
-		void handle_delete_art(); //throw(client_server::ConnectionClosedException,
-				//malformed_req_exception);
-		void handle_get_article(); //throw(client_server::ConnectionClosedException,
-				//malformed_req_exception);
-		
 		void read_end(); //throw(client_server::ConnectionClosedException);
 		int read_int(); //throw(client_server::ConnectionClosedException);
 		std::string read_parameter_string();

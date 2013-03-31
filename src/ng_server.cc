@@ -1,4 +1,4 @@
-#include "msg_handler.h"
+#include "server_msg_handler.h"
 #include "server.h"
 #include "protocol.h"
 #include "database.h"
@@ -38,7 +38,7 @@ int main(int argc, const char *argv[])
 
 		if (conn != 0) {
 			try {
-				msg_handler handler(conn, db);
+				server_msg_handler handler(conn, db);
 				handler.handle();
 			} catch (ConnectionClosedException&) {
 				error(server, conn);

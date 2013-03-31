@@ -35,13 +35,15 @@ include $(notdir $(SRC:.cc=.d))
 
 # Create the library; ranlib is for Darwin and maybe other systems.
 # Doesn't seem to do any damage on other systems.
-
 libclientserver.a: connection.o server.o
 	ar rv libclientserver.a \
 	connection.o server.o
 	ranlib libclientserver.a
 
-server: msg_handler.o ng_server.o memdb.o libclientserver.a
+server: server_msg_handler.o msg_handler.o ng_server.o memdb.o libclientserver.a
+
+client: ng_client.o libclientserver.a
+	$(CXX) $^ -o $@ # Doesn't work without this explicit rule, weird...
 
 test_db: main
 	./$<
