@@ -1,9 +1,6 @@
 #include "memdb.h"
 #include <algorithm>
 
-// TODO: Fix cbegin and cend on OS X. Since Per Holm has Mac, it must build on
-// one.
-
 std::vector<ng> mem_database::list_ng() const {
 	std::vector<ng> v;
 	for (mdb::const_iterator it = db.begin(); it != db.end(); ++it) {
@@ -92,7 +89,7 @@ void mem_database::delete_art(size_t ng_id, size_t art_id) throw(database::ng_ac
 
 	mdb::iterator it = db.find(ng);
 	if (it != db.end()) {
-		std::vector<art> arts = it->second;
+		std::vector<art>& arts = it->second;
 
 		auto found = std::find_if(arts.begin(), arts.end(), id_comparator(art_id));
 		if (found != arts.end()) {
