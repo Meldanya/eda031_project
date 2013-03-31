@@ -38,4 +38,10 @@ int main() {
 	arts = db.list_art(ngs[0].id);
 	copy(arts.begin(), arts.end(), ostream_iterator<art>(cout));
 	
+	db.create_ng("ng3, should have id 2");
+	
+	ngs = db.list_ng();
+	copy(ngs.begin(), ngs.end(), ostream_iterator<ng>(cout));
+
+	
 }

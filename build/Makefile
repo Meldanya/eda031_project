@@ -27,7 +27,7 @@ SRC_DIR   = ../src
 VPATH     = $(SRC_DIR)
 SRC       = $(wildcard $(SRC_DIR)/*.cc)
 
-.PHONY: all clean cleaner test_db
+.PHONY: all clean cleaner test_memdb test_filedb
 
 all: libclientserver.a
 
@@ -43,10 +43,16 @@ libclientserver.a: connection.o server.o
 
 server: msg_handler.o ng_server.o memdb.o libclientserver.a
 
-test_db: main
+test_memdb: memdb_test
 	./$<
 
-main: main.o memdb.o art.o ng.o
+memdb_test: memdb_test.o memdb.o art.o ng.o
+
+test_filedb: filedb_test
+	./$<
+
+filedb_test: filedb_test.o filedb.o art.o ng.o
+
 
 %.d: %.cc
 	@set -e; rm -f $(@F); \
