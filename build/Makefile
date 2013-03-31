@@ -55,7 +55,7 @@ main: main.o memdb.o art.o ng.o
 		rm -f $(@F).$$$$
 
 clean:
-	$(RM) -rf *.o *.d* server
+	$(RM) -rf *.o *.d* server main
 
 cleaner: clean
 	$(RM) libclientserver.a
