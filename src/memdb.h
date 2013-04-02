@@ -11,6 +11,8 @@
 
 class mem_database : public database {
 public:
+	mem_database() : database() {}
+	
 	typedef std::map<ng,std::vector<art>> mdb;
 	typedef std::map<size_t, ng> idmap;
 

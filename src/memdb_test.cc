@@ -28,8 +28,8 @@ int main() {
 		cout << "Correctly caught ng exception" << endl;
 	}
 	
-	db.delete_art(ngs[0].id, 0);
-	db.delete_ng(1);
+	db.delete_art(ngs[0].id, 1);
+	db.delete_ng(2);
 	db.create_art(ngs[0].id, "Walde", "Snelare hest", "DERPIER\n");
 	
 	ngs = db.list_ng();

@@ -16,14 +16,11 @@
 class file_database : public database {
 public:
 	
+	
+	
 	struct io_access_error {};
 	
-	file_database(std::string dbdir = "./database/") throw(io_access_error) : top_path(dbdir) {
-		ng_file = ".ngname.txt";
-		top = opendir(dbdir.c_str());
-		if (top == nullptr) 
-			throw (io_access_error());
-	};
+	file_database(std::string dbdir = "./database/") throw(io_access_error);
 	
 	~file_database() {closedir(top);}
 	
@@ -43,10 +40,19 @@ public:
 	virtual ng create_ng(std::string name) throw(ng_access_error); 
 	virtual void delete_ng(size_t ng_id) throw(ng_access_error);
 
+	virtual size_t max_ng_id ();
+	virtual size_t max_art_id (); 
+
 private:
 	DIR* top;
 	std::string top_path;
 	std::string ng_file; //file that holds the newsgroup name
+	std::string id_file; //file that holds the max ids
+	
+	std::string separator; //inside each article file this string separates author, title and content.
+	
+	int reset_top();
+	art parse(std::ifstream&, size_t) const throw(art_access_error);
 };
 
 #endif
