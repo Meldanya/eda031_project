@@ -42,8 +42,9 @@ libclientserver.a: connection.o server.o
 
 server: server_msg_handler.o msg_handler.o ng_server.o memdb.o libclientserver.a
 
-client: ng_client.o libclientserver.a
-	$(CXX) $^ -o $@ # Doesn't work without this explicit rule, weird...
+# Doesn't work without this explicit rule, weird...
+client: ng_client.o art.o ng.o client_msg_handler.o msg_handler.o libclientserver.a
+	$(CXX) $^ -o $@
 
 test_db: main
 	./$<
@@ -57,7 +58,7 @@ main: main.o memdb.o art.o ng.o
 		rm -f $(@F).$$$$
 
 clean:
-	$(RM) -rf *.o *.d* server main
+	$(RM) -rf *.o *.d* server main client
 
 cleaner: clean
 	$(RM) libclientserver.a
