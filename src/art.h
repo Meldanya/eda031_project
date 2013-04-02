@@ -15,6 +15,8 @@ struct art {
 	art(size_t id, std::string author, std::string title, std::string content) :
 		id(id), author(author), title(title), content(content) {}
 
+	art() : id(0), author(""), title(""), content("") {}
+
 };
 
 struct id_comparator {
