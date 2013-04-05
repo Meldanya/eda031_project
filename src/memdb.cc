@@ -62,7 +62,9 @@ ng mem_database::create_ng(std::string name) throw(database::ng_access_error) {
 
 void mem_database::delete_ng(size_t ng_id) throw(database::ng_access_error) {
 	ng ng = get_ng(ng_id);
-
+	
+	ids.erase(ids.find(ng_id));	
+	
 	mdb::iterator it = db.find(ng);
 	if (it != db.end()) {
 		db.erase(it);

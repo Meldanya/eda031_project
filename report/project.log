@@ -1,245 +1,35 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2012.12.11)  11 DEC 2012 14:26
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.1.20)  5 APR 2013 11:01
 entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
 **project.tex
-(C:\Users\Gustaf\Dropbox\Student\edan35\project\report\project.tex
+(./project.tex
 LaTeX2e <2011/06/27>
-Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
-abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
-croatian, czech, danish, dutch, esperanto, estonian, farsi, finnish, french, ga
-lician, german, german-x-2009-06-19, greek, gujarati, hindi, hungarian, iceland
-ic, indonesian, interlingua, irish, italian, kannada, kurmanji, lao, latin, lat
-vian, lithuanian, malayalam, marathi, mongolian, mongolianlmc, monogreek, ngerm
-an, ngerman-x-2009-06-19, nynorsk, oriya, panjabi, pinyin, polish, portuguese, 
-romanian, russian, sanskrit, serbian, slovak, slovenian, spanish, swedish, swis
-sgerman, tamil, telugu, turkish, turkmen, ukenglish, ukrainian, uppersorbian, u
-senglishmax, welsh, loaded.
-(C:\Users\Gustaf\Dropbox\Student\edan35\project\report\acmsiggraph.cls
+Babel <v3.8m> and hyphenation patterns for english, dumylang, nohyphenation, sw
+edish, loaded.
+(./acmsiggraph.cls
 Document Class: acmsiggraph 2008/10/21 ACM SIGGRAPH
-(C:\Users\Gustaf\AppData\Roaming\MiKTeX\2.9\tex\latex\lineno\lineno.sty
-Package: lineno 2005/11/02 line numbers on paragraphs v4.41
-\linenopenalty=\count79
-\output=\toks14
-\linenoprevgraf=\count80
-\linenumbersep=\dimen102
-\linenumberwidth=\dimen103
-\c@linenumber=\count81
-\c@pagewiselinenumber=\count82
-\c@LN@truepage=\count83
-\c@internallinenumber=\count84
-\c@internallinenumbers=\count85
-\quotelinenumbersep=\dimen104
-\bframerule=\dimen105
-\bframesep=\dimen106
-\bframebox=\box26
-LaTeX Info: Redefining \\ on input line 3056.
-)
-("C:\Program Files\MiKTeX 2.9\tex\latex\base\article.cls"
-Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
-("C:\Program Files\MiKTeX 2.9\tex\latex\base\size10.clo"
-File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
-)
-\c@part=\count86
-\c@section=\count87
-\c@subsection=\count88
-\c@subsubsection=\count89
-\c@paragraph=\count90
-\c@subparagraph=\count91
-\c@figure=\count92
-\c@table=\count93
-\abovecaptionskip=\skip41
-\belowcaptionskip=\skip42
-\bibindent=\dimen107
-)
-\bibhang=\skip43
-\titlespace=\skip44
-\teaserspace=\skip45
-\acm@abs=\toks15
-)
-("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphicx.sty"
-Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
 
-("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\keyval.sty"
-Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
-\KV@toks@=\toks16
-)
-("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphics.sty"
-Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+! LaTeX Error: File `lineno.sty' not found.
 
-("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\trig.sty"
-Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
-)
-("C:\Program Files\MiKTeX 2.9\tex\latex\00miktex\graphics.cfg"
-File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
-)
-Package graphics Info: Driver file: pdftex.def on input line 91.
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: sty)
 
-("C:\Program Files\MiKTeX 2.9\tex\latex\pdftex-def\pdftex.def"
-File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+Enter file name: 
+! Emergency stop.
+<read *> 
+         
+l.46 ^^M
+        
+*** (cannot \read from terminal in nonstop modes)
 
-("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\infwarerr.sty"
-Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
-)
-("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ltxcmds.sty"
-Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
-)
-\Gread@gobject=\count94
-))
-\Gin@req@height=\dimen108
-\Gin@req@width=\dimen109
-)
-("C:\Program Files\MiKTeX 2.9\tex\latex\ltxmisc\url.sty"
-\Urlmuskip=\muskip10
-Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
-)
-("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\times.sty"
-Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
-)
-("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ifpdf.sty"
-Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
-Package ifpdf Info: pdfTeX in PDF mode is detected.
-)
-(C:\Users\Gustaf\Dropbox\Student\edan35\project\report\project.aux)
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Try loading font information for OT1+ptm on input line 25.
-
-("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1ptm.fd"
-File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
-)
-(C:\Users\Gustaf\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
-[Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count95
-\scratchdimen=\dimen110
-\scratchbox=\box27
-\nofMPsegments=\count96
-\nofMParguments=\count97
-\everyMPshowfont=\toks17
-\MPscratchCnt=\count98
-\MPscratchDim=\dimen111
-\MPnumerator=\count99
-\makeMPintoPDFobject=\count100
-\everyMPtoPDFconversion=\toks18
-)
-LaTeX Font Info:    Try loading font information for OT1+phv on input line 34.
- ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1phv.fd"
-File: ot1phv.fd 2001/06/04 scalable font definitions for OT1/phv.
-)
-LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 34.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 34.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 34.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 34.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 34.
-LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <12> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 36.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 39.
-
-<./images/flux.png, id=1, 1027.84pt x 770.88pt>
-File: ./images/flux.png Graphic file (type png)
- <use ./images/flux.png>
-Package pdftex.def Info: ./images/flux.png used on input line 67.
-(pdftex.def)             Requested size: 168.66075pt x 126.49571pt.
-LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <10> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 74.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <9> on input line 76.
-
-<./images/sampling.png, id=3, 256.96pt x 256.96pt>
-File: ./images/sampling.png Graphic file (type png)
- <use ./images/sampling.png>
-Package pdftex.def Info: ./images/sampling.png used on input line 80.
-(pdftex.def)             Requested size: 168.66075pt x 168.66095pt.
-
-[1{C:/Users/Gustaf/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
-
-
- <C:/Users/Gustaf/Dropbox/Student/edan35/project/report/images/flux.png>]
-<./images/p1-A.png, id=18, 1027.84pt x 770.88pt>
-File: ./images/p1-A.png Graphic file (type png)
- <use ./images/p1-A.png>
-Package pdftex.def Info: ./images/p1-A.png used on input line 111.
-(pdftex.def)             Requested size: 168.66075pt x 126.49571pt.
-
-<./images/p1-B.png, id=19, 1027.84pt x 770.88pt>
-File: ./images/p1-B.png Graphic file (type png)
- <use ./images/p1-B.png>
-Package pdftex.def Info: ./images/p1-B.png used on input line 118.
-(pdftex.def)             Requested size: 168.66075pt x 126.49571pt.
-
-<./images/p1-gi-exp.png, id=20, 1027.84pt x 770.88pt>
-File: ./images/p1-gi-exp.png Graphic file (type png)
-
-<use ./images/p1-gi-exp.png>
-Package pdftex.def Info: ./images/p1-gi-exp.png used on input line 125.
-(pdftex.def)             Requested size: 168.66075pt x 126.49571pt.
- [2 <C:/Users/Gustaf/Dropbox/Student/edan35/project/report/images/sampling.png 
-(PNG copy)> <C:/Users/Gustaf/Dropbox/Student/edan35/project/report/images/p1-A.
-png> <C:/Users/Gustaf/Dropbox/Student/edan35/project/report/images/p1-B.png> <C
-:/Users/Gustaf/Dropbox/Student/edan35/project/report/images/p1-gi-exp.png>] <./
-images/p2-A.png, id=30, 1027.84pt x 770.88pt>
-File: ./images/p2-A.png Graphic file (type png)
-
-<use ./images/p2-A.png>
-Package pdftex.def Info: ./images/p2-A.png used on input line 148.
-(pdftex.def)             Requested size: 240.94499pt x 180.70984pt.
- <./images/p2-B.png, id=31, 1027.84pt x 770.88pt>
-File: ./images/p2-B.png Graphic file (type png)
-
-<use ./images/p2-B.png>
-Package pdftex.def Info: ./images/p2-B.png used on input line 155.
-(pdftex.def)             Requested size: 240.94499pt x 180.70984pt.
- <./images/p2-gi-exp.png, id=32, 1027.84pt x 770.88pt>
-File: ./images/p2-gi-exp.png Graphic file (type png)
-
-<use ./images/p2-gi-exp.png>
-Package pdftex.def Info: ./images/p2-gi-exp.png used on input line 162.
-(pdftex.def)             Requested size: 240.94499pt x 180.70984pt.
-
-(C:\Users\Gustaf\Dropbox\Student\edan35\project\report\project.bbl) [3]
-[4
-
- <C:/Users/Gustaf/Dropbox/Student/edan35/project/report/images/p2-A.png> <C:/Us
-ers/Gustaf/Dropbox/Student/edan35/project/report/images/p2-B.png> <C:/Users/Gus
-taf/Dropbox/Student/edan35/project/report/images/p2-gi-exp.png>]
-(C:\Users\Gustaf\Dropbox\Student\edan35\project\report\project.aux) ) 
+ 
 Here is how much of TeX's memory you used:
- 1700 strings out of 494045
- 23341 string characters out of 3148383
- 78648 words of memory out of 3000000
- 4983 multiletter control sequences out of 15000+200000
- 27671 words of font info for 51 fonts, out of 3000000 for 9000
- 715 hyphenation exceptions out of 8191
- 29i,12n,21p,831b,290s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Progra
-m Files/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:/Program Files/MiKTeX 2.9
-/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Program Files/MiKTeX 2.9/fonts/ty
-pe1/public/amsfonts/cm/cmmi9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/publi
-c/amsfonts/cm/cmr6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts
-/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.p
-fb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Pr
-ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Fil
-es/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Program Files/MiKTeX
- 2.9/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/typ
-e1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr
-8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
-Output written on project.pdf (4 pages, 1925730 bytes).
-PDF statistics:
- 80 PDF objects out of 1000 (max. 8388607)
- 0 named destinations out of 1000 (max. 500000)
- 41 words of extra memory for PDF output out of 10000 (max. 10000000)
-
+ 35 strings out of 495044
+ 601 string characters out of 3181318
+ 45075 words of memory out of 3000000
+ 3315 multiletter control sequences out of 15000+200000
+ 3640 words of font info for 14 fonts, out of 3000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 17i,0n,9p,88b,8s stack positions out of 5000i,500n,10000p,200000b,50000s
+!  ==> Fatal error occurred, no output PDF file produced!

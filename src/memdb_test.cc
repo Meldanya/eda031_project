@@ -30,6 +30,9 @@ int main() {
 	
 	db.delete_art(ngs[0].id, 1);
 	db.delete_ng(2);
+	
+	
+	
 	db.create_art(ngs[0].id, "Walde", "Snelare hest", "DERPIER\n");
 	
 	ngs = db.list_ng();
@@ -38,7 +41,7 @@ int main() {
 	arts = db.list_art(ngs[0].id);
 	copy(arts.begin(), arts.end(), ostream_iterator<art>(cout));
 	
-	db.create_ng("ng3, should have id 2");
+	db.create_ng("ng2");
 	
 	ngs = db.list_ng();
 	copy(ngs.begin(), ngs.end(), ostream_iterator<ng>(cout));
