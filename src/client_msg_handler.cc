@@ -57,9 +57,28 @@ void client_msg_handler::send_create_ng(const string &newsgroup_name)
 	conn->read(); // Get rid of ANS_END.
 }
 
-void client_msg_handler::send_delete_ng()
+void client_msg_handler::send_delete_ng(int newsgroup_id)
 {
+	conn->write(Protocol::COM_DELETE_NG);
+	write_parameter_int(newsgroup_id);
+	conn->write(Protocol::COM_END);
 
+	// Check that answer is correct.
+	if (conn->read() != Protocol::ANS_DELETE_NG)
+		throw wrong_answer_exception();
+
+	if (conn->read() == Protocol::ANS_NAK) {
+		unsigned char c = conn->read();
+		conn->read(); // Get rid of ANS_END.
+
+		if (c == Protocol::ERR_NG_DOES_NOT_EXIST) {
+			throw newsgroup_does_not_exist_exception();
+		} else {
+			throw wrong_answer_exception();
+		}
+	}
+
+	conn->read(); // Get rid of ANS_END.
 }
 
 vector<pair<size_t,string>> client_msg_handler::send_list_art(int newsgroup_id)
@@ -96,14 +115,58 @@ vector<pair<size_t,string>> client_msg_handler::send_list_art(int newsgroup_id)
 	return articles;
 }
 
-void client_msg_handler::send_create_art()
+void client_msg_handler::send_create_art(int newsgroup_id, const string &subject,
+		const string &author, const string &content)
 {
+	conn->write(Protocol::COM_CREATE_ART);
+	write_parameter_int(newsgroup_id);
+	write_string(subject);
+	write_string(author);
+	write_string(content);
+	conn->write(Protocol::COM_END);
 
+	// Check that answer is correct.
+	if (conn->read() != Protocol::ANS_CREATE_ART)
+		throw wrong_answer_exception();
+
+	if (conn->read() == Protocol::ANS_NAK) {
+		unsigned char c = conn->read();
+		conn->read(); // Get rid of ANS_END.
+
+		if (c == Protocol::ERR_NG_DOES_NOT_EXIST)
+			throw newsgroup_does_not_exist_exception();
+		else
+			throw wrong_answer_exception();
+	}
+
+	conn->read(); // Get rid of ANS_END.
 }
 
-void client_msg_handler::send_delete_art()
+void client_msg_handler::send_delete_art(int newsgroup_id, int article_id)
 {
+	conn->write(Protocol::COM_DELETE_ART);
+	write_parameter_int(newsgroup_id);
+	write_parameter_int(article_id);
+	conn->write(Protocol::COM_END);
 
+	// Check that answer is correct.
+	if (conn->read() != Protocol::ANS_DELETE_ART)
+		throw wrong_answer_exception();
+
+	if (conn->read() == Protocol::ANS_NAK) {
+		unsigned char c = conn->read();
+		conn->read(); // Get rid of ANS_END.
+
+		if (c == Protocol::ERR_NG_DOES_NOT_EXIST) {
+			throw newsgroup_does_not_exist_exception();
+		} else if (c == Protocol::ERR_ART_DOES_NOT_EXIST) {
+			throw article_does_not_exist_exception();
+		} else {
+			throw wrong_answer_exception();
+		}
+	}
+
+	conn->read(); // Get rid of ANS_END.
 }
 
 art client_msg_handler::send_get_article(size_t newsgroup_id, size_t art_id)

@@ -3,6 +3,8 @@
 #include <sstream>
 #include <vector>
 #include <utility>
+#include <cstdio>
+#include <fstream>
 
 #include "connection.h"
 #include "client_msg_handler.h"
@@ -42,12 +44,30 @@ void print_articles(const vector<pair<size_t, string>> &articles)
 
 void print_article(const art &article)
 {
-	cout << article.title << endl;
-	cout << string(article.title.size(), '=') << endl;
+	char filename[L_tmpnam];
+	std::tmpnam(filename);
+	std::ofstream file(filename);
+	if (file) {
+		file << article.title << endl;
+		file << string(article.title.size(), '=') << endl;
 
-	cout << "By: " << article.author << endl << endl;
+		file << "By: " << article.author << endl << endl;
 
-	cout << article.content << endl;
+		file << article.content;
+
+		string command = string("$PAGER ") + filename;
+		int status = system(command.c_str());
+		if (status) {
+			cout << article.title << endl;
+			cout << string(article.title.size(), '=') << endl;
+
+			cout << "By: " << article.author << endl << endl;
+
+			cout << article.content;
+		}
+
+		std::remove(filename);
+	}
 }
 
 int main(int argc, const char *argv[])
@@ -64,72 +84,148 @@ int main(int argc, const char *argv[])
 	string line;
 	while (getline(cin, line)) {
 		stringstream ss(line, ios_base::in);
+
+		// Read the command.
 		string cmd;
 		ss >> cmd;
 
 		// Save old exception states.
 		stringstream::iostate oldstate = ss.exceptions();
-		if (cmd == "list_ng") {
-			try {
+		ss.exceptions(stringstream::failbit | stringstream::badbit);
+		try {
+			if (cmd == "list_ng") {
 				print_newsgroups(handler.send_list_ng());
-			} catch (client_msg_handler::wrong_answer_exception&) {
-				cout << "Yup" << endl;
-			}
-		} else if (cmd == "list_art") {
-			ss.exceptions(stringstream::failbit | stringstream::badbit);
-			size_t ng_id;
-			try {
+			} else if (cmd == "list_art") {
+				size_t ng_id;
 				ss >> ng_id;
-				print_articles(handler.send_list_art(ng_id));
-			} catch (stringstream::failure&) {
-				cerr << "FAAAAAIL" << endl;
-			} catch (client_msg_handler::newsgroup_does_not_exist_exception&) {
-				cerr << "No such newsgroup ID. Use 'list_ng' to see available "
-					"newsgroups." << endl;
-			}
-		} else if (cmd == "read_art") {
-			ss.exceptions(stringstream::failbit | stringstream::badbit);
-			size_t ng_id;
-			size_t art_id;
-			try {
+
+				try {
+					print_articles(handler.send_list_art(ng_id));
+				} catch (client_msg_handler::newsgroup_does_not_exist_exception&) {
+					cerr << "No such newsgroup ID. Use 'list_ng' to see "
+						"available newsgroups." << endl;
+				}
+			} else if (cmd == "read_art") {
+				size_t ng_id;
+				size_t art_id;
 				ss >> ng_id;
 				ss >> art_id;
-				print_article(handler.send_get_article(ng_id, art_id));
-			} catch (stringstream::failure&) {
-				cerr << "FAAAAAIL" << endl;
-			} catch (client_msg_handler::newsgroup_does_not_exist_exception&) {
-				cerr << "No such newsgroup ID. Use 'list_ng' to see available "
-					"newsgroups." << endl;
-			} catch (client_msg_handler::article_does_not_exist_exception&) {
-				cerr << "No such article ID. Use 'list_art " << ng_id << "' to "
-					"see available articles in this newsgroup." << endl;
-			}
-		} else if (cmd == "create_ng") {
-			ss.exceptions(stringstream::failbit | stringstream::badbit);
-			string ng_name;
-			try {
+
+				try {
+					print_article(handler.send_get_article(ng_id, art_id));
+				} catch (client_msg_handler::newsgroup_does_not_exist_exception&) {
+					cerr << "No such newsgroup ID. Use 'list_ng' to see "
+						"available newsgroups." << endl;
+				} catch (client_msg_handler::article_does_not_exist_exception&) {
+					cerr << "No such article ID. Use 'list_art " << ng_id << "' to "
+						"see available articles in this newsgroup." << endl;
+				}
+			} else if (cmd == "create_ng") {
+				string ng_name;
 				ss >> ng_name;
-				handler.send_create_ng(ng_name);
-				cout << "Newsgroup created!" << endl;
-			} catch (stringstream::failure&) {
-				cerr << "FAAAAAIL" << endl;
-			} catch (client_msg_handler::newsgroup_already_exists_exception&) {
-				cerr << "A newsgroup of that name already exist, please choose "
-					"another one." << endl;
+
+				try {
+					handler.send_create_ng(ng_name);
+					cout << "Newsgroup created!" << endl;
+				} catch (client_msg_handler::newsgroup_already_exists_exception&) {
+					cerr << "A newsgroup of that name already exist, please "
+						"choose another one." << endl;
+				}
+			} else if (cmd == "delete_ng") {
+				int ng_id;
+				ss >> ng_id;
+
+				try {
+					handler.send_delete_ng(ng_id);
+					cout << "Newsgroup deleted!" << endl;
+				} catch (client_msg_handler::newsgroup_does_not_exist_exception&) {
+					cerr << "No such newsgroup ID. Use 'list_ng' to see "
+						"available newsgroups." << endl;
+				}
+			} else if (cmd == "create_art") {
+				size_t ng_id;
+				string subject;
+				string author;
+				ss >> ng_id;
+
+				cout << "Subject: ";
+				getline(cin, subject);
+				cout << "Author: ";
+				getline(cin, author);
+
+				try {
+					char filename[L_tmpnam];
+					std::tmpnam(filename);
+					string command = string("$EDITOR ") + filename;
+					int status = system(command.c_str());
+
+					std::ifstream file(filename);
+					if (file && status == 0) {
+						string buf;
+						// Find out length of content.
+						file.seekg(0, file.end);
+						std::ifstream::streampos filesize = file.tellg();
+						buf.reserve(filesize);
+
+						// Reset position and read content.
+						file.seekg(0);
+						char c;
+						while ((c = file.get()) && !file.eof())
+							buf += c;
+
+						handler.send_create_art(ng_id, subject, author, buf);
+						cout << endl << "Article created." << endl;
+					}
+
+					std::remove(filename);
+				} catch (client_msg_handler::newsgroup_does_not_exist_exception&) {
+					cerr << "No such newsgroup ID. Use 'list_ng' to see "
+						"available newsgroups." << endl;
+				}
+			} else if (cmd == "delete_art") {
+				size_t ng_id;
+				size_t art_id;
+				ss >> ng_id;
+				ss >> art_id;
+
+				try {
+					handler.send_delete_art(ng_id, art_id);
+					cout << "Article deleted!" << endl;
+				} catch (client_msg_handler::newsgroup_does_not_exist_exception&) {
+					cerr << "No such newsgroup ID. Use 'list_ng' to see "
+						"available newsgroups." << endl;
+				} catch (client_msg_handler::article_does_not_exist_exception&) {
+					cerr << "No such article ID. Use 'list_art " << ng_id << "' to "
+						"see available articles in this newsgroup." << endl;
+				}
+			} else if (cmd == "help") {
+				cout << "Existing commands: " << endl;
+				cout << " list_ng:\tLists the newsgroups, takes no parameters."
+					<< endl;
+				cout << " create_ng:\tCreate a new newsgroups, takes the name "
+					"of the new newsgroup as a parameter." << endl;
+				cout << " delete_ng:\tDeletes a newsgroups, takes the ID of the "
+					"newsgroup as a parameter." << endl;
+				cout << " list_art:\tLists the articles in a newsgroups, takes "
+					"the ID if the newsgroup to list articles in as a parameter."
+					<< endl;
+				cout << " create_art:\tCreates a new article, TODO." << endl;
+				cout << " delete_art:\tDeletes an article, takes the ID of the "
+					"newsgroup the article is in and the ID of the article as "
+					"its parameters (in that order)." << endl;
+				cout << " read_art:\tReads an article, takes the ID of the "
+					"newsgroup the article is in and the ID of the article as "
+					"its parameters (in that order)." << endl;
+			} else {
+				cerr << "Unknown command, use 'help' to list available commands."
+					<< endl;
 			}
-		} else if (cmd == "list_art") {
-
-		} else if (cmd == "list_art") {
-
-		} else if (cmd == "list_art") {
-
-		} else if (cmd == "list_art") {
-
-		} else {
-			cerr << "Unknown command, use 'help' to list available commands."
-				<< endl;
+		} catch (stringstream::failure&) {
+			cerr << "Wrong parameters for this command. Use 'help' to see "
+				<< "available commands." << endl;
 		}
 
+		// Reset exception state.
 		ss.exceptions(oldstate);
 
 		cout << endl << PROMPT;

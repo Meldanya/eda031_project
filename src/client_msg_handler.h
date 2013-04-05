@@ -94,9 +94,10 @@ class client_msg_handler : public msg_handler
 		 * already exists.
 		 */
 		void send_create_ng(const std::string &newsgroup_name);
-		void send_delete_ng();
-		void send_create_art();
-		void send_delete_art();
+		void send_delete_ng(int newsgroup_id);
+		void send_create_art(int newsgroup_id, const std::string &subject,
+				const std::string &author, const std::string &content);
+		void send_delete_art(int newsgroup_id, int article_id);
 };
 
 #endif
