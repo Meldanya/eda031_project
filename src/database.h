@@ -17,9 +17,9 @@ public:
 	struct ng_access_error {}; //thrown when tried to access non-existing newsgroup
 
 	/**
-	 * Constructs a new database, resets the ID's to 0.
+	 * Constructs a new database, resets the ID's to 1.
 	 */
-	database() : art_ids(0), ng_ids(0) {}
+	database() : art_ids(1), ng_ids(1) {}
 
 	/**
 	 * List the articles for the provided news group ID.
@@ -112,14 +112,14 @@ public:
 	 *
 	 * @return The next article ID to use.
 	 */
-	size_t max_art_id () { return art_ids++; }
+	virtual size_t max_art_id () { return art_ids++; }
 
 	/**
 	 * Returns the next news group ID to use.
 	 *
 	 * @return The next news group ID to use.
 	 */
-	size_t max_ng_id () { return ng_ids++; }
+	virtual size_t max_ng_id () { return ng_ids++; }
 
 protected:
 	size_t art_ids;
