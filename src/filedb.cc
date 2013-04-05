@@ -5,11 +5,10 @@
 #include <iostream>
 
 
-file_database::file_database(std::string dbdir) throw(io_access_error) : database(), top_path(dbdir) {
-	separator = "&SEPARATOR;;"; 
-	ng_file = ".ngname.txt";
-	id_file = "ids.txt";
-	top = opendir(dbdir.c_str());
+file_database::file_database(std::string dbdir) throw(io_access_error) : database(), top_path(dbdir),
+								ng_file(".ngname.txt"), id_file("ids.txt"), separator("&SEPARATOR;;") {
+
+	DIR* top = opendir(dbdir.c_str());
 	if (top == nullptr) {
 		int status = mkdir(dbdir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 		if (status != 0) 
@@ -30,16 +29,10 @@ file_database::file_database(std::string dbdir) throw(io_access_error) : databas
 		art_ids = id;
 		ifs.close();
 	}
+	
+	closedir(top);
 }
 
-int file_database::reset_top() {
-	closedir(top);
-	top = opendir(top_path.c_str());
-	if (top == nullptr) 
-		return 1;
-	return 0;
-	
-}
 
 size_t file_database::max_ng_id() { 
 	++ng_ids;
@@ -65,8 +58,9 @@ ng file_database::get_ng(size_t id) const throw(ng_access_error) {
 	while ((entry = readdir(dir)) != nullptr) {
 		if (entry->d_name == ng_file) {
 			std::ifstream ifs(top_path + std::to_string(id) + "/" + ng_file);
-			std::string ng_name;
-			ifs >> ng_name;
+			std::stringstream ss;
+			ss << ifs.rdbuf();
+			std::string ng_name(ss.str());
 			ifs.close();
 			return ng(id, ng_name);
 		}
@@ -195,13 +189,13 @@ art file_database::parse(std::ifstream& ifs, size_t art_id) const
 	first = s.find(separator);
 	second = s.find(separator, first + sep_length);
 	third = s.find(separator, second + sep_length);
-	
+
 	if (first == std::string::npos || second == std::string::npos || third == std::string::npos)
 		throw(art_access_error());
 	
 	std::string author(s.substr(0,first));
-	std::string title(s.substr(first + sep_length, second));
-	std::string content(s.substr(second + sep_length, third));
+	std::string title(s.substr(first + sep_length, second - (first + sep_length)));
+	std::string content(s.substr(second + sep_length, third - (second + sep_length)));
 	
 	return art(art_id, author, title, content);
 }

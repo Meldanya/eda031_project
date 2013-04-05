@@ -3,6 +3,7 @@
 #include "protocol.h"
 #include "database.h"
 #include "memdb.h"
+#include "filedb.h"
 
 #include <iostream>
 
@@ -31,7 +32,7 @@ int main(int argc, const char *argv[])
 		exit(1);
 	}
 
-	mem_database db;
+	file_database db;
 
 	while (true) {
 		Connection* conn = server.waitForActivity();

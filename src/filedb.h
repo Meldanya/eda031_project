@@ -22,7 +22,7 @@ public:
 	
 	file_database(std::string dbdir = "./database/") throw(io_access_error);
 	
-	~file_database() {closedir(top);}
+	~file_database() { }
 	
 	virtual std::vector<art> list_art(size_t ng_id) const throw(ng_access_error);
 	
@@ -44,14 +44,13 @@ public:
 	virtual size_t max_art_id (); 
 
 private:
-	DIR* top;
-	std::string top_path;
-	std::string ng_file; //file that holds the newsgroup name
-	std::string id_file; //file that holds the max ids
+
+	const std::string top_path;
+	const std::string ng_file; //file that holds the newsgroup name
+	const std::string id_file; //file that holds the max ids
 	
-	std::string separator; //inside each article file this string separates author, title and content.
+	const std::string separator; //inside each article file this string separates author, title and content.
 	
-	int reset_top();
 	art parse(std::ifstream&, size_t) const throw(art_access_error);
 };
 
