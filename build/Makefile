@@ -29,7 +29,7 @@ SRC       = $(wildcard $(SRC_DIR)/*.cc)
 
 .PHONY: all clean cleaner test_memdb test_filedb
 
-all: libclientserver.a
+all: client server install
 
 include $(notdir $(SRC:.cc=.d))
 
@@ -56,6 +56,10 @@ test_filedb: filedb_test
 
 filedb_test: filedb_test.o filedb.o art.o ng.o
 
+install:
+	mkdir -p ../bin
+	cp server ../bin
+	cp client ../bin
 
 %.d: %.cc
 	@set -e; rm -f $(@F); \
@@ -68,4 +72,5 @@ clean:
 
 cleaner: clean
 	$(RM) libclientserver.a
+	$(RM) -r ../bin
 

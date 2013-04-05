@@ -4,6 +4,14 @@
 #include <sstream>
 #include <iostream>
 
+// Stupid workaround 
+template <typename T>
+std::string to_string(T t)
+{
+	std::stringstream ss;
+	ss << t;
+	return ss.str();
+}
 
 file_database::file_database(std::string dbdir) throw(io_access_error) : database(), top_path(dbdir),
 								ng_file(".ngname.txt"), id_file("ids.txt"), separator("&SEPARATOR;;") {
@@ -51,13 +59,13 @@ size_t file_database::max_art_id () {
 }
 
 ng file_database::get_ng(size_t id) const throw(ng_access_error) {
-	DIR* dir = opendir((top_path + std::to_string(id)).c_str());
+	DIR* dir = opendir((top_path + to_string(id)).c_str());
 	if (dir == nullptr) 
 		throw(ng_access_error());
 	struct dirent* entry;
 	while ((entry = readdir(dir)) != nullptr) {
 		if (entry->d_name == ng_file) {
-			std::ifstream ifs(top_path + std::to_string(id) + "/" + ng_file);
+			std::ifstream ifs((top_path + to_string(id) + "/" + ng_file).c_str());
 			std::stringstream ss;
 			ss << ifs.rdbuf();
 			std::string ng_name(ss.str());
@@ -88,9 +96,9 @@ ng file_database::create_ng(std::string name) throw(ng_access_error) {
 	//no newsgroup with the name exists, create newsgroup folder
 	size_t id = max_ng_id();
 	
-	int i = mkdir((top_path + std::to_string(id)).c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+	int i = mkdir((top_path + to_string(id)).c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 	if (i == 0) {
-		std::ofstream ofs(top_path + std::to_string(id) + "/" + ng_file);
+		std::ofstream ofs((top_path + to_string(id) + "/" + ng_file).c_str());
 		ofs << name;
 		ofs.close();
 		return ng(id, name);
@@ -130,11 +138,11 @@ void file_database::delete_ng(size_t ng_id) throw(ng_access_error) {
 	}
 	//all articles in ng are deleted
 	
-	int res = remove((top_path + std::to_string(ng_id) + "/" + ng_file).c_str());
+	int res = remove((top_path + to_string(ng_id) + "/" + ng_file).c_str());
 	if (res != 0) 
 		throw (ng_access_error());
 	//folder should be completely empty
-	res = rmdir((top_path + std::to_string(ng_id)).c_str());
+	res = rmdir((top_path + to_string(ng_id)).c_str());
 	if (res != 0) 
 		throw (ng_access_error());
 	
@@ -142,9 +150,9 @@ void file_database::delete_ng(size_t ng_id) throw(ng_access_error) {
 
 void file_database::delete_art(size_t ng_id, size_t id) 
 					throw(ng_access_error, art_access_error) {
-	if ((opendir((top_path + std::to_string(ng_id)).c_str())) == nullptr) 
+	if ((opendir((top_path + to_string(ng_id)).c_str())) == nullptr) 
 		throw (ng_access_error());
-	int res = remove((top_path + std::to_string(ng_id) + "/" + std::to_string(id)).c_str());
+	int res = remove((top_path + to_string(ng_id) + "/" + to_string(id)).c_str());
 	if (res != 0)
 		throw (art_access_error());
 	
@@ -153,10 +161,10 @@ void file_database::delete_art(size_t ng_id, size_t id)
 art file_database::create_art(size_t ng_id, const std::string& author,
 					const std::string& title, const std::string& content)
 					throw(ng_access_error) {
-	if ((opendir((top_path + std::to_string(ng_id)).c_str())) == nullptr) 
+	if ((opendir((top_path + to_string(ng_id)).c_str())) == nullptr) 
 		throw (ng_access_error());
 	art a(max_art_id(), author, title, content);
-	std::ofstream ofs((top_path + std::to_string(ng_id) + "/" + std::to_string(a.id)).c_str());
+	std::ofstream ofs((top_path + to_string(ng_id) + "/" + to_string(a.id)).c_str());
 	ofs << author << separator
 		<< title << separator
 		<< content << separator;
@@ -167,9 +175,9 @@ art file_database::create_art(size_t ng_id, const std::string& author,
 
 art file_database::get_art(size_t ng_id, size_t id) const
 					throw(ng_access_error, art_access_error) {
-	if ((opendir((top_path + std::to_string(ng_id)).c_str())) == nullptr) 
+	if ((opendir((top_path + to_string(ng_id)).c_str())) == nullptr) 
 		throw (ng_access_error());
-	std::ifstream ifs((top_path + std::to_string(ng_id) + "/" + std::to_string(id)).c_str());
+	std::ifstream ifs((top_path + to_string(ng_id) + "/" + to_string(id)).c_str());
 	if (ifs.fail())
 		throw (art_access_error());
 	return parse(ifs, id);
@@ -202,7 +210,7 @@ art file_database::parse(std::ifstream& ifs, size_t art_id) const
 
 
 std::vector<art> file_database::list_art(size_t ng_id) const throw(ng_access_error) {
-	if ((opendir((top_path + std::to_string(ng_id)).c_str())) == nullptr) 
+	if ((opendir((top_path + to_string(ng_id)).c_str())) == nullptr) 
 		throw (ng_access_error());
 	
 	std::vector<art> arts;
