@@ -11,11 +11,11 @@ using namespace std;
 using namespace client_server;
 using namespace protocol;
 
-void error(Server &server, Connection *conn)
+void error(Server &server, Connection *conn, const string &msg)
 {
 	server.deregisterConnection(conn);
 	delete conn;
-	cout << "Client closed connection" << endl;
+	cerr << msg << endl;
 }
 
 int main(int argc, const char *argv[])
@@ -42,9 +42,10 @@ int main(int argc, const char *argv[])
 				server_msg_handler handler(conn, db);
 				handler.handle();
 			} catch (ConnectionClosedException&) {
-				error(server, conn);
+				error(server, conn, "Client closed the connection.");
 			} catch (msg_handler::malformed_req_exception&) {
-				error(server, conn);
+				error(server, conn, "The request was malformed from the client's"
+						" side.");
 			}
 		} else {
 			server.registerConnection(new Connection);
