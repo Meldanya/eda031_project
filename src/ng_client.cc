@@ -53,7 +53,7 @@ void print_article(const art &article)
 
 		file << "By: " << article.author << endl << endl;
 
-		file << article.content;
+		file << article.content << endl;
 
 		string command = string("$PAGER ") + filename;
 		int status = system(command.c_str());
@@ -80,6 +80,8 @@ int main(int argc, const char *argv[])
 	Connection conn(argv[1], atoi(argv[2]));
 	client_msg_handler handler(&conn);
 
+	cout << "News client v0.9, 2013-04-10. Use 'help' to see available commands"
+		<< endl;
 	cout << PROMPT;
 	string line;
 	while (getline(cin, line)) {
@@ -209,7 +211,10 @@ int main(int argc, const char *argv[])
 				cout << " list_art:\tLists the articles in a newsgroups, takes "
 					"the ID if the newsgroup to list articles in as a parameter."
 					<< endl;
-				cout << " create_art:\tCreates a new article, TODO." << endl;
+				cout << " create_art:\tCreates a new article, takes the ID of "
+					"the newsgroup to create the article in and then "
+					"interactively asks for the rest of the information."
+					<< endl;
 				cout << " delete_art:\tDeletes an article, takes the ID of the "
 					"newsgroup the article is in and the ID of the article as "
 					"its parameters (in that order)." << endl;

@@ -23,13 +23,17 @@ else
 	CXXFLAGS += -O2 
 endif
 
+ifeq ($(MEM_DB), true)
+	CXXFLAGS += -D AMNESIA_DB
+endif
+
 SRC_DIR   = ../src
 VPATH     = $(SRC_DIR)
 SRC       = $(wildcard $(SRC_DIR)/*.cc)
 
-.PHONY: all clean cleaner test_memdb test_filedb
+.PHONY: all clean cleaner test_memdb test_filedb install
 
-all: client server install
+all: client mem_server file_server install
 
 include $(notdir $(SRC:.cc=.d))
 
@@ -40,9 +44,16 @@ libclientserver.a: connection.o server.o
 	connection.o server.o
 	ranlib libclientserver.a
 
-server: server_msg_handler.o msg_handler.o ng_server.o memdb.o libclientserver.a filedb.o
+ng_server_mem.o: ng_server.cc
+	$(CXX) $(CXXFLAGS) -D AMNESIA_DB -c -o $@ $<
 
-# Doesn't work without this explicit rule, weird...
+# Doesn't work without these explicit rules, weird...
+mem_server: server_msg_handler.o msg_handler.o ng_server_mem.o memdb.o libclientserver.a
+	$(CXX) $^ -o $@
+
+file_server: server_msg_handler.o msg_handler.o ng_server.o filedb.o libclientserver.a
+	$(CXX) $^ -o $@
+
 client: ng_client.o art.o ng.o client_msg_handler.o msg_handler.o libclientserver.a
 	$(CXX) $^ -o $@
 
@@ -56,9 +67,10 @@ test_filedb: filedb_test
 
 filedb_test: filedb_test.o filedb.o art.o ng.o
 
-install:
+install: mem_server file_server client
 	mkdir -p ../bin
-	cp server ../bin
+	cp mem_server ../bin
+	cp file_server ../bin
 	cp client ../bin
 
 %.d: %.cc
@@ -68,9 +80,10 @@ install:
 		rm -f $(@F).$$$$
 
 clean:
-	$(RM) -rf *.o *.d* server main client
+	$(RM) *.o *.d* file_server mem_server main client
 
 cleaner: clean
 	$(RM) libclientserver.a
 	$(RM) -r ../bin
+	$(RM) -r database
 

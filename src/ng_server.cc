@@ -2,8 +2,12 @@
 #include "server.h"
 #include "protocol.h"
 #include "database.h"
+
+#ifdef AMNESIA_DB
 #include "memdb.h"
+#else
 #include "filedb.h"
+#endif
 
 #include <iostream>
 
@@ -32,7 +36,11 @@ int main(int argc, const char *argv[])
 		exit(1);
 	}
 
+#ifdef AMNESIA_DB
+	mem_database db;
+#else
 	file_database db;
+#endif
 
 	while (true) {
 		Connection* conn = server.waitForActivity();
