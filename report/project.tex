@@ -8,13 +8,16 @@
 \usepackage{times}
 \usepackage{ifpdf}
 
-
+%% Redundant.
 %% Paper title.
 
-\title{C++ News Server and Client Implementation}
+%% \title{C++ News Server and Client Implementation}
 
-\author{Gustaf Waldemarson\thanks{e-mail: ada09gwa@student.lu.se} \and Martin Trasteby\thanks{e-mail: atf09dtr@student.lu.se} \and Erik Jansson\thanks{ada09eja@student.lu.se} \and Tommy Olofsson \thanks{ada09tol@student.lu.se}}
-\affiliation{Faculty of Engineering (LTH), Lund University \\ Sweden}
+%% \author{Gustaf Waldemarson\thanks{e-mail: ada09gwa@student.lu.se}
+%% \and Martin Trasteby\thanks{e-mail: atf09dtr@student.lu.se}
+%% \and Erik Jansson\thanks{ada09eja@student.lu.se}
+%% \and Tommy Olofsson \thanks{ada09tol@student.lu.se}}
+%% \affiliation{Faculty of Engineering (LTH), Lund University \\ Sweden}
 
 
 %% Keywords that describe your work.
@@ -37,40 +40,31 @@
 \maketitle
 
 \begin{abstract}
-This report details an implementation of a news server with a fixed communication protocol, as well as a client using this protocol in order to retrieve or create news on the server. The articles and groupings of articles called "news groups" are stored in two different versions of a database -- one stores the information on the primary memory, while another stores them on the hard drive. The client is a terminal application.
+This report details an implementation of a news server with a fixed
+communication protocol, as well as a client using this protocol in
+order to retrieve or create news on the server. The articles and
+groupings of articles called "news groups" are stored in two different
+versions of a database -- one stores the information on the primary
+memory, while another stores them on the hard drive. The client is a
+terminal application.
+
 \end{abstract}
 \keywordlist
 
-\section{Introduction}
+\section{Server, memory only database}
+\label{sec:smemdb}
+%% TODO: Subsections for classes used.
 
+\section{Server, disk backed database}
+See \ref{sec:smemdb}. Another database class are employed to save the
+database to disk \ref{ref:class_memdb}.
+\label{sec:sdiskdb}
+%% TODO: Subsections for memdb.
 
-\section{Reflective Shadow Maps -- RSM}
-\label{sec:rsm}
+\section{Client}
+\label{sec:client}
+%% TODO: Subsections for classes used. Ref. to already described classes.
 
-\subsection{Optimization - Sampling Scheme}
-\label{sec:optrsm}
-
-
-\section{Variance Shadow Maps -- VSM}
-\label{sec:vsm}
-
-\subsection{Summed Area Variance Shadow Maps}
-
-
-\section{Results}
-
-\section{Discussion}
-\subsection{Reflective Shadow Maps}
-
-\section{Conclusion}
-
-
-%List of all citations to avoid warnings from TeX. %
-%\cite{VSM2006,RSM2005,GGGauss07,GGVSM07,FSAT05}
-
-%\bibliographystyle{acmsiggraph}
-%\nocite{*}
-%\bibliography{project}
 \end{document}
 
 
