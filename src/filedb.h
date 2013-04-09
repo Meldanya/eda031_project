@@ -13,12 +13,14 @@
 #include "ng.h"
 #include "art.h"
 
+/**
+ * Database that stores all data on disk and thus the data is kept even after the object is destroyed.
+ * All changes are instantly reflected on disk.
+ */
+
 class file_database : public database {
 public:
-	
-	
-	
-	struct io_access_error {};
+	struct io_access_error {}; //Used in file-specific errors, i.e. constructor fail.
 	
 	file_database(std::string dbdir = "./database/") throw(io_access_error);
 	
@@ -51,7 +53,16 @@ private:
 	
 	const std::string separator; //inside each article file this string separates author, title and content.
 	
-	art parse(std::ifstream&, size_t) const throw(art_access_error);
+	/**
+	 * Parses an ifstream with the file contents of an article into an article object.
+	 *
+	 * @param ifs The stream containing the content of the article file.
+	 * @param art_id The id of the article.
+	 *
+	 * @return The article as an art object.
+	 * @throws art_access_error If the article ID does not exist or on read error.
+	 */
+	art parse(std::ifstream& ifs, size_t art_id) const throw(art_access_error);
 };
 
 #endif

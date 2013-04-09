@@ -9,6 +9,10 @@
 #include "ng.h"
 #include "art.h"
 
+/**
+ * Primary memory based database. Content is lost once the object is destroyed.
+ */
+
 class mem_database : public database {
 public:
 	mem_database() : database() {}

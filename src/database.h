@@ -36,7 +36,7 @@ public:
 	 * Get the article for the provided news group and article ID.
 	 *
 	 * @param ng_id The ID of the news group of the article.
-	 * @param ng_id The ID of the article.
+	 * @param art_id The ID of the article.
 	 *
 	 * @return The article as an art object.
 	 * @throws ng_access_error If the news group ID does not exist.
