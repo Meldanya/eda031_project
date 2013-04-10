@@ -45,7 +45,9 @@ void print_articles(const vector<pair<size_t, string>> &articles)
 void print_article(const art &article)
 {
 	char filename[L_tmpnam];
-	std::tmpnam(filename);
+	if (!std::tmpnam(filename))
+		cerr << "Failed to create temporary file." << endl;
+
 	std::ofstream file(filename);
 	if (file) {
 		file << article.title << endl;
@@ -157,7 +159,8 @@ int main(int argc, const char *argv[])
 
 				try {
 					char filename[L_tmpnam];
-					std::tmpnam(filename);
+					if (!std::tmpnam(filename))
+						cerr << "Failed to create temporary file." << endl;
 					string command = string("$EDITOR ") + filename;
 					int status = system(command.c_str());
 
