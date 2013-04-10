@@ -11,13 +11,13 @@
 %% Redundant.
 %% Paper title.
 
-%% \title{C++ News Server and Client Implementation}
+\title{C++ News Server and Client Implementation}
 
-%% \author{Gustaf Waldemarson\thanks{e-mail: ada09gwa@student.lu.se}
-%% \and Martin Trasteby\thanks{e-mail: atf09dtr@student.lu.se}
-%% \and Erik Jansson\thanks{ada09eja@student.lu.se}
-%% \and Tommy Olofsson \thanks{ada09tol@student.lu.se}}
-%% \affiliation{Faculty of Engineering (LTH), Lund University \\ Sweden}
+\author{Gustaf Waldemarson\thanks{e-mail: ada09gwa@student.lu.se}
+\and Martin Trasteby\thanks{e-mail: atf09dtr@student.lu.se}
+\and Erik Jansson\thanks{ada09eja@student.lu.se}
+\and Tommy Olofsson \thanks{ada09tol@student.lu.se}}
+\affiliation{Faculty of Engineering (LTH), Lund University \\ Sweden}
 
 
 %% Keywords that describe your work.
@@ -37,7 +37,7 @@
 
 \input{title_page.tex}
 
-\maketitle
+%%\maketitle
 
 \begin{abstract}
 This report details an implementation of a news server with a fixed
@@ -51,15 +51,49 @@ terminal application.
 \end{abstract}
 \keywordlist
 
-\section{Server, memory only database}
+\section{Server with Memory Only Database}
 \label{sec:smemdb}
-%% TODO: Subsections for classes used.
 
-\section{Server, disk backed database}
-See \ref{sec:smemdb}. Another database class are employed to save the
-database to disk \ref{ref:class_memdb}.
+\subsection{Memory Database}
+\label{ssec:mem_db}
+The memory database stores data only in primary memory. It uses two maps, one to connect a news group
+to a number of articles and one to connect the news group ids to the actual news groups. The latter
+map was not technically necessary; it is mearly an optimization since the database functions take
+news group id as arguments. 
+
+The map containing the articles maps a news group to a vector containing article objects. Since newer
+articles will always be stored later in the vector, it will always be sorted by id. The
+implementation does not take advantage of this, though. 
+
+The memory database inherits from the virtual class \texttt{Database} to make sure it uses a common 
+interface with other database implementations. It has no public functions except for the ones inherited
+from the interface.
+
+
+\section{Server with Disk Backed Database}
 \label{sec:sdiskdb}
-%% TODO: Subsections for memdb.
+
+See \ref{sec:smemdb}. Another database class are employed to save the
+database to disk \ref{ssec:mem_db}.
+
+\subsection{File Database}
+\label{ssec:file_db}
+The file database stores all data to files and directories directly. Each news group is represented
+by a folder named by the news group id. The news group name is stored in a specific file called ".ngname.txt",
+which is ignored when searching for articles. The articles are stored as files in the news group folders, 
+also named by their id. The title, author and contents of the articles are separated by a specific separator
+string, chosen in such a way that it will not appear in any realistic article. For a full scale implementation, a
+slightly more sophisticated strategy could be used. The file database does not keep anything in the primary memory, 
+which makes sure every change is instantly reflected on the hard disk. 
+
+Reading and writing to folders are implemented with C functions like \texttt{opendir, readdir} and \texttt{closedir}.
+Reading and writing to files are implemented with C++ file streams. 
+%Something like the Boost filesystem library could be used to make the style more C++ compliant.
+
+Like the memory database, it inherits from the virtual class \texttt{Database} to make sure it uses a common 
+interface with other database implementations. It has no public functions except for the ones inherited
+from the interface.
+
 
 \section{Client}
 \label{sec:client}
