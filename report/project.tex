@@ -54,15 +54,35 @@ terminal application.
 \section{Server with Memory Only Database}
 \label{sec:smemdb}
 
+\subsection{Database}
+\label{ssec:database}
+A virtual class providing an interface for different database implementations. The function names
+are chosen in a way similar to the low-level protocol used to communicate with the client. The only 
+implemented functions deal with picking the IDs for new news groups and articles uniquely. 
+
+Two exceptions are specified in the Database: One for news group access errors, and one for article
+access errors. They are used when some a user tries to access or create news groups or articles respecitvely in an incorrect way, such as creating a news group with an already used name or reading an article that doesn't exist.
+
+\subsection{News Group}
+\label{ssec:ng}
+A news group is represented only by its ID and name. It is implemented as a struct to give direct
+access to the member variables in order to keep it simple. 
+
+\subsection{Article}
+\label{ssec:art}
+An article is represented by its ID, title, author and contents. It is implemented as a struct to
+give direct access to the member variables in order to keep it simple. An ID comparator functor
+is implemented here in order to simplify searches in vectors containing articles.
+
 \subsection{Memory Database}
 \label{ssec:mem_db}
 The memory database stores data only in primary memory. It uses two maps, one to connect a news group
-to a number of articles and one to connect the news group ids to the actual news groups. The latter
+to a number of articles and one to connect the news group IDs to the actual news groups. The latter
 map was not technically necessary; it is mearly an optimization since the database functions take
-news group id as arguments. 
+news group ID as arguments. 
 
 The map containing the articles maps a news group to a vector containing article objects. Since newer
-articles will always be stored later in the vector, it will always be sorted by id. The
+articles will always be stored later in the vector, it will always be sorted by ID. The
 implementation does not take advantage of this, though. 
 
 The memory database inherits from the virtual class \texttt{Database} to make sure it uses a common 
@@ -76,12 +96,17 @@ from the interface.
 See \ref{sec:smemdb}. Another database class are employed to save the
 database to disk \ref{ssec:mem_db}.
 
+\subsection{Common Classes with Memory Only Database}
+\label{ssec:common_classes}
+The Database, News Group and Article classes are shared between the the disk backed database
+and the memory only database.
+
 \subsection{File Database}
 \label{ssec:file_db}
 The file database stores all data to files and directories directly. Each news group is represented
-by a folder named by the news group id. The news group name is stored in a specific file called ".ngname.txt",
+by a folder named by the news group ID. The news group name is stored in a specific file called ".ngname.txt",
 which is ignored when searching for articles. The articles are stored as files in the news group folders, 
-also named by their id. The title, author and contents of the articles are separated by a specific separator
+also named by their ID. The title, author and contents of the articles are separated by a specific separator
 string, chosen in such a way that it will not appear in any realistic article. For a full scale implementation, a
 slightly more sophisticated strategy could be used. The file database does not keep anything in the primary memory, 
 which makes sure every change is instantly reflected on the hard disk. 
