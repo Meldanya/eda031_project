@@ -37,7 +37,7 @@
 
 \input{title_page.tex}
 
-%%\maketitle
+% \maketitle
 
 \begin{abstract}
 This report details an implementation of a news server with a fixed
@@ -51,7 +51,24 @@ terminal application.
 \end{abstract}
 \keywordlist
 
-\section{Server with Memory Only Database}
+\section{Trace Of Interaction}
+Due to the simplicity of the server design, tracing the execution path through
+the server when a connection is established is very simple:
+
+When the server receives a command on a connection, it creates a
+\verb|server_msg_handler| object and delegates the task of handling the request
+by calling the \verb|server_msg_handler.handle| function. This function checks
+what command the client sent and calls different functions in the class
+depending on the result.  Each of these functions perform some sanity checking
+on the request and responds in an appropriate way after consulting the database.
+
+The \verb|server_msg_handler| class is a subclass of the \verb|msg_handler|
+class which contains some helper functions common to both the client and the
+server. These helper functions include \verb|write_parameter_int|,
+\verb|write_int| and \verb|write_string|, which write strings and integers in
+the manner specified by the protocol.
+
+\section{Server, memory only database}
 \label{sec:smemdb}
 
 \subsection{Memory Database}
