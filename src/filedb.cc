@@ -75,9 +75,11 @@ ng file_database::get_ng(size_t id) const throw(ng_access_error) {
 			ss << ifs.rdbuf();
 			std::string ng_name(ss.str());
 			ifs.close();
+			closedir(dir);
 			return ng(id, ng_name);
 		}
 	}
+	closedir(dir);
 	throw(ng_access_error());
 }
 
@@ -126,6 +128,7 @@ std::vector<ng> file_database::list_ng() const {
 		}
 	}
 	sort(ngs.begin(), ngs.end(), [] (const ng& a, const ng& b) {return a.id < b.id;}); 
+	closedir(dir);
 	return ngs;
 
 }
@@ -151,9 +154,10 @@ void file_database::delete_ng(size_t ng_id) throw(ng_access_error) {
 void file_database::delete_art(size_t ng_id, size_t id) 
 					throw(ng_access_error, art_access_error) {
 	
-	if ((opendir((top_path + to_string(ng_id)).c_str())) == nullptr) 
+	DIR* dir = nullptr;
+	if ((dir = opendir((top_path + to_string(ng_id)).c_str())) == nullptr) 
 		throw (ng_access_error());
-
+	closedir(dir);
 	int res = remove((top_path + to_string(ng_id) + "/" + to_string(id)).c_str());
 	if (res != 0)
 		throw (art_access_error());
@@ -164,8 +168,10 @@ art file_database::create_art(size_t ng_id, const std::string& author,
 					const std::string& title, const std::string& content)
 					throw(ng_access_error) {
 	//Checks that the nd_id refers to a correct directory
-	if ((opendir((top_path + to_string(ng_id)).c_str())) == nullptr) 
+	DIR* dir = nullptr;
+	if ((dir = opendir((top_path + to_string(ng_id)).c_str())) == nullptr) 
 		throw (ng_access_error());
+	closedir(dir);
 	//Create a new article object
 	art a(max_art_id(), author, title, content);
 	//Write it to a file
@@ -180,12 +186,19 @@ art file_database::create_art(size_t ng_id, const std::string& author,
 
 art file_database::get_art(size_t ng_id, size_t id) const
 					throw(ng_access_error, art_access_error) {
-					
-	if ((opendir((top_path + to_string(ng_id)).c_str())) == nullptr) 
+	
+	//Check if directory for news group exists
+	DIR* dir = nullptr;				
+	if ((dir = opendir((top_path + to_string(ng_id)).c_str())) == nullptr) 
 		throw (ng_access_error());
+	closedir(dir);
+	//Read and parse the article
 	std::ifstream ifs((top_path + to_string(ng_id) + "/" + to_string(id)).c_str());
+	
+	//This should not happen under normal circumstances, only if the article file is corrupted
 	if (ifs.fail())
 		throw (art_access_error());
+		
 	return parse(ifs, id);
 	
 }
@@ -193,17 +206,20 @@ art file_database::get_art(size_t ng_id, size_t id) const
 art file_database::parse(std::ifstream& ifs, size_t art_id) const 
 					throw (art_access_error)  {
 	
+	//Get it as a string
 	std::stringstream ss;
 	ss << ifs.rdbuf();
 	std::string s(ss.str());
 	ifs.close();
 	
+	//Find the separator strings
 	size_t sep_length = separator.size();
 	size_t first, second, third;
 	first = s.find(separator);
 	second = s.find(separator, first + sep_length);
 	third = s.find(separator, second + sep_length);
 
+	//Should only happen if article file is corrupted
 	if (first == std::string::npos || second == std::string::npos || third == std::string::npos)
 		throw(art_access_error());
 	
@@ -235,7 +251,8 @@ std::vector<art> file_database::list_art(size_t ng_id) const throw(ng_access_err
 	}
 	
 	closedir(dir);
-
+	
+	//readdir gives them in seemingly random order, need to sort them by id
 	sort(arts.begin(), arts.end(), [] (const art& a, const art& b) {return a.id < b.id;}); 
 	
 	return arts;

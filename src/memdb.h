@@ -17,8 +17,10 @@ class mem_database : public database {
 public:
 	mem_database() : database() {}
 	
-	typedef std::map<ng,std::vector<art>> mdb;
-	typedef std::map<size_t, ng> idmap;
+	typedef std::map<ng,std::vector<art>> mdb; 
+
+	//Used to find news groups faster from id, since all functions refer to news group by id
+	typedef std::map<size_t, ng> idmap; 
 
 	virtual std::vector<art> list_art(size_t ng_id) const throw(ng_access_error);
 	virtual art get_art(size_t ng_id, size_t id) const

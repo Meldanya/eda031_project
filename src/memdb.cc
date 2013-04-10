@@ -33,7 +33,9 @@ art mem_database::get_art(size_t ng_id, size_t art_id) const throw(database::ng_
 	mdb::const_iterator it = db.find(ng);
 	if (it != db.end()) {
 		std::vector<art> arts = it->second;
-
+		
+		//Uses id_comparator found in art.h
+		//Could be faster since arts is sorted by id already
 		auto found = std::find_if(arts.begin(), arts.end(), id_comparator(art_id));
 		if (found != arts.end()) {
 			return *found;
@@ -41,14 +43,13 @@ art mem_database::get_art(size_t ng_id, size_t art_id) const throw(database::ng_
 		throw(database::art_access_error());
 
 	} else {
+		//Should never happen since get_ng throws ng_access_error in this case
 		throw(database::ng_access_error());
 	}
-
-
 }
 
 ng mem_database::create_ng(std::string name) throw(database::ng_access_error) {
-	//find another ng with same name if it exists
+	//Find another ng with same name if it exists
 	for (auto it = ids.begin(); it != ids.end(); ++it) {
 		if (it->second.name == name) {
 			throw(database::ng_access_error());
@@ -76,6 +77,7 @@ void mem_database::delete_ng(size_t ng_id) throw(database::ng_access_error) {
 
 art mem_database::create_art(size_t ng_id, const std::string& author, const std::string& title,
 							 const std::string& content) throw(database::ng_access_error) {
+							 
 	art art(max_art_id(), author, title, content);
 	ng ng = get_ng(ng_id);
 	mdb::iterator it = db.find(ng);
@@ -91,8 +93,10 @@ void mem_database::delete_art(size_t ng_id, size_t art_id) throw(database::ng_ac
 
 	mdb::iterator it = db.find(ng);
 	if (it != db.end()) {
+		//We need arts by reference in order to change it (and not a copy)
 		std::vector<art>& arts = it->second;
-
+		
+		//Could be faster, since arts is sorted by id already
 		auto found = std::find_if(arts.begin(), arts.end(), id_comparator(art_id));
 		if (found != arts.end()) {
 			arts.erase(found);
