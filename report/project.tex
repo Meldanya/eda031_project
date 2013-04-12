@@ -161,14 +161,11 @@ allows the user to read long articles in a convenient way. Similarly, the
 he saves it, the file is read and sent to the server as the text of the
 article.
 
-If \verb|$PAGER| and \verb|$EDITOR| is not set, \verb|read_art| will still
-simply print the article to the terminal but \verb|create_art| will fail. Since
-this only is a course project, no effort was made to do more error handling in
-this case.
+
 
 \section{Conclusion}
 \label{sec:concl}
-The implenetation of both the server and the client can handle all commands during
+The implemetation of both the server and the client can handle all commands during
 normal conditions. There are however certain special cases which it cannot handle. One
 example of such for the disk based database is if an article contains the separator
 string. A completely typesafe system could fix this by parsing the content prior to
@@ -185,6 +182,11 @@ Another theoretical weakness of the disk based database is that article IDs are 
 across news groups, which was not necessary according to the specification. This
 limits the amount of articles in the database, but since the IDs are of
 the type \texttt{size\_t}, this will not be a issue on modern computers.
+
+In the client, if \verb|$PAGER| and \verb|$EDITOR| is not set, \verb|read_art| will still
+simply print the article to the terminal but \verb|create_art| will fail. Since
+this only is a course project, no effort was made to do more error handling in
+this case.
 
 A proper implementation should have some form of authentication and encryption 
 in order to be considered secure. This is however outside the scope of this project.
