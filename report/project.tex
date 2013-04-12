@@ -68,7 +68,7 @@ server. These helper functions include \verb|write_parameter_int|,
 \verb|write_int| and \verb|write_string|, which write strings and integers in
 the manner specified by the protocol.
 
-\section{Server, memory only database}
+\section{Server with Memory Only Database}
 \label{sec:smemdb}
 
 \subsection{Database}
@@ -140,6 +140,35 @@ from the interface.
 \section{Client}
 \label{sec:client}
 %% TODO: Subsections for classes used. Ref. to already described classes.
+
+\section{Conclusion}
+\label{sec:concl}
+The implenetation of both the server and the client can handle all commands during
+normal conditions. There are however certain special cases which it cannot handle. One
+example of such for the disk based database is if an article contains the separator
+string. A completely typesafe system could fix this by parsing the content prior to
+storing it. 
+
+Another example is a potential security issue with the disk based server
+is that users can manipulate the files during execution. Some changes, for example 
+chaning the IDs of articles, or writing articles without the separator string, will
+corrupt the database and cause crashes. This should ideally be solved by catching
+all exceptions in every potential case and attempt to correct the database with a
+loss of data if necessary. 
+
+Another theoretical weakness of the disk based database is that article IDs are unique
+across news groups, which was not necessary according to the specification. This
+limits the amount of articles in the database, but since the IDs are of
+the type \texttt{size\_t}, this will not be a issue on modern computers.
+
+A proper implementation should have some form of authentication and encryption 
+in order to be considered secure. This is however outside the scope of this project.
+
+\subsection{Suggestions for Future Improvements}
+Instead of using C functions for writing and reading to the hard drive, it could
+be a good idea to make use of libraries, such as Boost.filesystem, that follow C++ 
+conventions. It would also teach the students to interface with real external libraries. 
+That knowledge could be valuable for any future C++ projects.
 
 \end{document}
 
