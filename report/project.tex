@@ -139,7 +139,32 @@ from the interface.
 
 \section{Client}
 \label{sec:client}
-%% TODO: Subsections for classes used. Ref. to already described classes.
+The client is not written as a class since this was deemed unnecessary and
+excessive. Instead, it contains a loop reading a command line and executing the
+command. Depending on what command it reads, it expects different parameters
+and will print an error message if the expected parameters are not found (or if
+they are erroneously formatted). Similarly to the server, the client has a
+\verb|client_msg_handler| class, also a subclass of the \verb|msg_handler|
+class, which handles sending commands to the server and parsing the response.
+Most of these methods will throw exceptions if the command failed for some
+reason or if the response from the server was malformed.
+
+The client also consists of some helper functions to print the responses from
+the server to the terminal. Two of the commands are particularly interesting
+and deserve a special notice in this report, namely \verb|read_art| and
+\verb|create_art| which lets the user read and create an article respectively.
+The \verb|read_art| command will write the article to a file and invoke the
+user specified program \verb|$PAGER| (usually \verb|less| or \verb|more|). This
+allows the user to read long articles in a convenient way. Similarly, the
+\verb|create_art| command will invoke the user specified program \verb|$EDITOR|
+(e.g.\ \verb|vi| or \verb|emacs|) in which the user writes his article and when
+he saves it, the file is read and sent to the server as the text of the
+article.
+
+If \verb|$PAGER| and \verb|$EDITOR| is not set, \verb|read_art| will still
+simply print the article to the terminal but \verb|create_art| will fail. Since
+this only is a course project, no effort was made to do more error handling in
+this case.
 
 \section{Conclusion}
 \label{sec:concl}
@@ -171,6 +196,4 @@ conventions. It would also teach the students to interface with real external li
 That knowledge could be valuable for any future C++ projects.
 
 \end{document}
-
-
 
